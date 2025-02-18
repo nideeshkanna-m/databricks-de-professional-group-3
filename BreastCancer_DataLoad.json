@@ -1,0 +1,81 @@
+{
+  "name": "BreastCancer_DataLoad",
+  "description": "group3 workflow",
+  "email_notifications": {
+    "no_alert_for_skipped_runs": false
+  },
+  "webhook_notifications": {},
+  "timeout_seconds": 0,
+  "max_concurrent_runs": 1,
+  "tasks": [
+    {
+      "task_key": "Landing",
+      "run_if": "ALL_SUCCESS",
+      "notebook_task": {
+        "notebook_path": "/Workspace/Shared/Main/LandingLayer",
+        "source": "WORKSPACE"
+      },
+      "existing_cluster_id": "0212-134342-45bwbx8z",
+      "timeout_seconds": 0,
+      "email_notifications": {},
+      "webhook_notifications": {}
+    },
+    {
+      "task_key": "Bronze",
+      "depends_on": [
+        {
+          "task_key": "Landing"
+        }
+      ],
+      "run_if": "ALL_SUCCESS",
+      "notebook_task": {
+        "notebook_path": "/Workspace/Shared/Main/BronzeLayer",
+        "source": "WORKSPACE"
+      },
+      "existing_cluster_id": "0212-134342-45bwbx8z",
+      "timeout_seconds": 0,
+      "email_notifications": {},
+      "webhook_notifications": {}
+    },
+    {
+      "task_key": "Silver",
+      "depends_on": [
+        {
+          "task_key": "Bronze"
+        }
+      ],
+      "run_if": "ALL_SUCCESS",
+      "notebook_task": {
+        "notebook_path": "/Workspace/Shared/Main/SilverLayer",
+        "source": "WORKSPACE"
+      },
+      "existing_cluster_id": "0212-134342-45bwbx8z",
+      "timeout_seconds": 0,
+      "email_notifications": {},
+      "webhook_notifications": {}
+    },
+    {
+      "task_key": "Gold",
+      "depends_on": [
+        {
+          "task_key": "Silver"
+        }
+      ],
+      "run_if": "ALL_SUCCESS",
+      "notebook_task": {
+        "notebook_path": "/Workspace/Shared/Main/GoldLayer",
+        "source": "WORKSPACE"
+      },
+      "existing_cluster_id": "0212-134342-45bwbx8z",
+      "timeout_seconds": 0,
+      "email_notifications": {},
+      "webhook_notifications": {}
+    }
+  ],
+  "queue": {
+    "enabled": true
+  },
+  "run_as": {
+    "user_name": "dbuser48@meteoros.ai"
+  }
+}
